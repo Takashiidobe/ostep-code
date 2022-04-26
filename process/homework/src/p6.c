@@ -15,12 +15,9 @@ int main(int argc, char *argv[]) {
     exit(1);
   } else if (rc == 0) {
     printf("In child\n");
-    while ((wait(NULL)) > 0) {
-      printf("After waiting in child\n");
-    }
   } else { // parent goes down this path (main)
-    int rc = wait(NULL);
-    if (rc > 0) {
+    int wait_result = waitpid(rc, NULL, 0);
+    if (wait_result > 0) {
       printf("All children succeeded\n");
     }
   }
