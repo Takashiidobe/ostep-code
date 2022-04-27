@@ -1,3 +1,4 @@
+# Threads and Locks
 
 A simple example of compare-and-swap shown in actual C code (which calls into
 assembly).
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
     printf("before successful cas: %d\n", global);
     int success = compare_and_swap(&global, 0, 100);
     printf("after successful cas: %d (success: %d)\n", global, success);
-    
+
     printf("before failing cas: %d\n", global);
     success = compare_and_swap(&global, 0, 200);
     printf("after failing cas: %d (old: %d)\n", global, success);
@@ -39,10 +40,21 @@ The first call to `compare_and_swap()` succeeds because the old value is
 correct; the second call does not because the old value is wrong.
 
 To compile and run:
+
 ```sh
 prompt> gcc -o compare-and-swap compare-and-swap.c -Wall
 prompt> ./compare-and-swap
 ```
 
+If you use an Itanium processor (x86) you can use `__sync` functions
+detailed here:
 
+![GCC Intel Itanium Processor-specific Atomic Builtins](https://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html)
 
+In which case, the compare and swap call can be replaced with this:
+
+```c
+int cas(int* reg, int old, int new) {
+  return __sync_val_compare_and_swap(reg, old, new);
+}
+```

@@ -10,7 +10,7 @@ PROGS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%,$(SRCS))
 
 all: $(PROGS)
 
-build/%: $(SRC_DIR)/%.c $(LIBS) build
+build/%: $(SRC_DIR)/%.c $(LIBS)
 	$(CC) $(RELEASE_FLAGS) $(LIBS) $< -o $@$(VERSION)$(SUFFIX)
 
 clean:
